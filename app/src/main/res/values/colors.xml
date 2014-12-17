@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="action_bar_coin_color">#258ABA</color>
+    <color name="action_bar_red">#CB4949</color>
+    <color name="background_tab_pressed">#6633B5E5</color>
+
+    <!-- zxing -->
+    <color name="barcode_viewfinder_laser">#ffcc0000</color>
+    <color name="barcode_viewfinder_mask">#60000000</color>
+    <color name="barcode_possible_result_points">#c0ffbd21</color>
+    <color name="barcode_result_view">#b0000000</color>
+    <color name="barcode_result_points">#c099cc00</color>
+
+</resources>

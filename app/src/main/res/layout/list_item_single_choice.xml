@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:id="@android:id/text1"
+                 android:text="BitcoinID"
+                 android:layout_width="match_parent"
+                 android:layout_height="?android:attr/listPreferredItemHeightLarge"
+                 android:textAppearance="?android:attr/textAppearanceSmall"
+                 android:gravity="center_vertical"
+                 android:checkMark="?android:attr/listChoiceIndicatorSingle"
+                 android:paddingRight="10dp"
+                 android:paddingLeft="10dp"/>

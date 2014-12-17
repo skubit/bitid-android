@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BitID Authenticator</string>
+    <string name="action_settings">Settings</string>
+    <string name="perm_billing">Allows the user to sign in using a BitID.</string>
+
+    <!-- zxing -->
+    <string name="barcode_scan_message">Place a Bitcoin barcode inside the\nviewfinder to scan it.</string>
+
+    <!--Login-->
+    <string name="login_request_for_id">Request for Identification</string>
+    <string name="login_request_for_id_2">is requesting that you identify yourself with a Bitcoin address.</string>
+    <string name="login_proceed">Do you want to proceed?</string>
+
+    <!--Choose Activity-->
+    <string name="choose_address">Select a Bitcoin address</string>
+    <string name="create_new_address">Create New</string>
+</resources>

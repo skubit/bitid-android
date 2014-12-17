@@ -1,0 +1,13 @@
+{
+    "syntaxVersion":"2",
+    "projectPackageId": "com.skubit.bitid",
+    "authority": "com.skubit.bitid.provider",
+    "providerJavaPackage": "com.skubit.bitid.provider",
+    "providerClassName": "KeyProvider",
+    "sqliteOpenHelperClassName": "KeySQLiteOpenHelper",
+    "sqliteOpenHelperCallbacksClassName": "KeySQLiteOpenHelperCallbacks",
+    "sqliteUpgradeHelperClassName": "KeySQLiteUpgradeHelper",
+    "databaseFileName": "keys.db",
+     "databaseVersion": 1,
+    "enableForeignKeys": true
+}

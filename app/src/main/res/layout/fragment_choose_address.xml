@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="20dp"
+            android:layout_weight="0"
+            android:text="@string/choose_address"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:minHeight="200dp"
+            android:choiceMode="singleChoice"/>
+
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0"
+            android:background="#000000"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".05"
+            android:orientation="horizontal">
+
+        <ImageView
+                android:id="@+id/logo"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_centerVertical="true"
+                android:padding="5dp"
+                android:src="@drawable/ic_launcher"/>
+
+        <Button
+                android:id="@+id/loginBtn"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/default_button"
+                android:text="SIGN IN"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/text_small"/>
+
+        <Button
+                android:id="@+id/createAddressBtn"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_alignBaseline="@+id/loginBtn"
+                android:layout_alignBottom="@+id/loginBtn"
+                android:layout_margin="0dp"
+                android:layout_toRightOf="@+id/logo"
+                android:background="@drawable/default_button"
+                android:text="CREATE NEW"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/text_small"/>
+    </RelativeLayout>
+
+</LinearLayout>

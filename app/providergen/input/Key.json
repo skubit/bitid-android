@@ -1,0 +1,21 @@
+{
+    "fields": [
+        {
+            "name": "nickname",
+            "type": "String"
+        },
+        {
+            "name": "pub",
+            "type": "byte[]"
+        },
+        {
+            "name": "priv",
+            "type": "byte[]"
+        },
+        {
+        
+            "name": "address",
+            "type": "String"
+        },
+     ]
+}
