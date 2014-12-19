@@ -15,13 +15,22 @@
  */
 package com.skubit.bitid.activities;
 
-import com.skubit.bitid.AuthenticationCallback;
 import com.skubit.bitid.BitID;
+import com.skubit.bitid.ECKeyData;
 import com.skubit.bitid.R;
 import com.skubit.bitid.ResultCode;
+import com.skubit.bitid.SignInCallback;
+import com.skubit.bitid.UIState;
+import com.skubit.bitid.fragments.ChooseAddressFragment;
+import com.skubit.bitid.fragments.CreateAddressFragment;
 import com.skubit.bitid.fragments.SignInRequestFragment;
+import com.skubit.bitid.fragments.SignInResponseFragment;
+
+import org.bitcoinj.core.ECKey;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,7 +39,13 @@ import android.widget.Toast;
 
 import java.net.URISyntaxException;
 
-public class AuthenticationActivity extends Activity implements AuthenticationCallback {
+public class AuthenticationActivity extends Activity implements SignInCallback {
+
+    private ECKeyData mEcKeyData;
+
+    private String mUIState = UIState.SIGNIN_REQUEST;
+
+    private String mBitId;
 
     public static Intent newInstance(String bitId) {
         Intent i = new Intent();
@@ -81,21 +96,46 @@ public class AuthenticationActivity extends Activity implements AuthenticationCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
         String bitId = getBitId();
+        if (bitId == null) {
+            bitId = mBitId;
+        }
         if (!isValidBitId(bitId)) {
             Toast.makeText(getApplicationContext(),
                     "Invalid bitID: " + bitId, Toast.LENGTH_SHORT).show();
             setResult(ResultCode.INVALID_BITID);
             finish();
+            return;
+        }
+        if (savedInstanceState != null) {
+            mUIState = savedInstanceState.getString("UI_STATE");
         }
 
-        if (savedInstanceState == null) {//make sure this refreshes if bitId changes
-            getFragmentManager().beginTransaction().add(R.id.main_container,
-                    SignInRequestFragment.newInstance(bitId), "accept").commit();
+        preloadHackForKey();
+
+        Fragment frag = getFragmentManager().findFragmentByTag(mUIState);
+        if (frag != null) {
+            getFragmentManager().beginTransaction().show(frag);
+            return;
+        } else {
+            showSignInRequest(bitId);
         }
     }
 
+    /**
+     * Forces expensive param generation upfront
+     */
+    private void preloadHackForKey() {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean a = ECKey.FAKE_SIGNATURES;
+            }
+        });
+        t.start();
+    }
+
     @Override
-    public void callback(int resultCode, String message) {
+    public void sendResultsBackToCaller(int resultCode, String message) {
         if (TextUtils.isEmpty(message)) {
             setResult(resultCode);
         } else {
@@ -111,8 +151,57 @@ public class AuthenticationActivity extends Activity implements AuthenticationCa
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        // getFragmentManager().popBackStack();
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        mUIState = savedInstanceState.getString("UI_STATE");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("UI_STATE", mUIState);
+    }
+
+    public void showLoading() {
+
+    }
+
+    public void showCreateAddress(String bitID, ECKeyData keyData) {
+        mBitId = bitID;
+        mUIState = UIState.CREATE_ADDRESS;
+        getFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_NONE)
+                .replace(R.id.main_container,
+                        CreateAddressFragment
+                                .newInstance(bitID, keyData),
+                        UIState.CREATE_ADDRESS).commitAllowingStateLoss();
+    }
+
+    @Override
+    public void showSignInResponse(int responseCode, String message) {
+        mUIState = UIState.SIGNIN_RESPONSE;
+        getFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_NONE)
+                .replace(R.id.main_container,
+                        SignInResponseFragment.newInstance(responseCode,
+                                message), UIState.SIGNIN_RESPONSE).commitAllowingStateLoss();
+    }
+
+    @Override
+    public void showChooseAddress(String bitID) {
+        mBitId = bitID;
+        mUIState = UIState.CHOOSE_ADDRESS;
+        getFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_NONE)
+                .replace(R.id.main_container, ChooseAddressFragment.newInstance(bitID),
+                        UIState.CHOOSE_ADDRESS)
+                .commit();
+    }
+
+    @Override
+    public void showSignInRequest(String bitID) {
+        mBitId = bitID;
+        mUIState = UIState.SIGNIN_REQUEST;
+        getFragmentManager().beginTransaction().add(R.id.main_container,
+                SignInRequestFragment.newInstance(bitID), UIState.SIGNIN_REQUEST).commit();
     }
 }

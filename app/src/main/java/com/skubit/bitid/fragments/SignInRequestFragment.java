@@ -19,8 +19,6 @@ import com.skubit.bitid.BitID;
 import com.skubit.bitid.R;
 import com.skubit.bitid.Utils;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +28,7 @@ import android.widget.TextView;
 
 import java.net.URISyntaxException;
 
-public class SignInRequestFragment extends Fragment {
+public class SignInRequestFragment extends BaseFragment {
 
     private Button mYesBtn;
 
@@ -47,12 +45,12 @@ public class SignInRequestFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        final String bitIDText = getArguments().getString(BitID.EXTRA_NAME);
+        final String bitID = getArguments().getString(BitID.EXTRA_NAME);
 
         View view = inflater.inflate(R.layout.fragment_signin_request, container, false);
         mSite = (TextView) view.findViewById(R.id.site);
         try {
-            mSite.setText(Utils.getBitID(bitIDText).toCallbackURI().getHost());
+            mSite.setText(Utils.getBitID(bitID).toCallbackURI().getHost());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -60,11 +58,9 @@ public class SignInRequestFragment extends Fragment {
         mYesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_NONE)
-                        .replace(R.id.main_container, ChooseAddressFragment.newInstance(bitIDText),
-                                "accept")
-                        .commit();
+                if (mAuthCallbacks != null) {
+                    mAuthCallbacks.showChooseAddress(bitID);
+                }
             }
         });
 

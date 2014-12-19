@@ -13,18 +13,20 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.skubit.bitid;
+package com.skubit.bitid.loaders;
 
-import com.skubit.bitid.fragments.SignInResponseFragment;
+import com.skubit.bitid.BitID;
+import com.skubit.bitid.ResultCode;
+import com.skubit.bitid.SignInResponse;
+import com.skubit.bitid.Utils;
 
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.params.MainNetParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.os.AsyncTask;
+import android.content.AsyncTaskLoader;
+import android.content.Context;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -35,20 +37,20 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.util.Scanner;
 
-public class SignInAsyncTask extends AsyncTask<Void, Void, SignInResponse> {
+public class SignInAsyncTaskLoader extends AsyncTaskLoader<SignInResponse> {
 
     private final BitID mBitID;
 
     private final ECKey mKey;
 
-    private final FragmentManager mFragmentManager;
+    public SignInResponse mSignInResponse;
 
     private HttpURLConnection mConnection;
 
-    public SignInAsyncTask(final BitID bitID, final ECKey key, FragmentManager fragmentManager) {
+    public SignInAsyncTaskLoader(Context context, final BitID bitID, final ECKey key) {
+        super(context);
         mBitID = bitID;
         mKey = key;
-        mFragmentManager = fragmentManager;
     }
 
     public static String asString(InputStream inputStream) throws IOException {
@@ -112,7 +114,7 @@ public class SignInAsyncTask extends AsyncTask<Void, Void, SignInResponse> {
     }
 
     @Override
-    protected SignInResponse doInBackground(Void... params) {
+    public SignInResponse loadInBackground() {
         try {
             return performRequest();
         } catch (Exception e) {
@@ -122,12 +124,31 @@ public class SignInAsyncTask extends AsyncTask<Void, Void, SignInResponse> {
     }
 
     @Override
-    protected void onPostExecute(SignInResponse signInResponse) {
-        super.onPostExecute(signInResponse);
-        mFragmentManager.beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_NONE)
-                .replace(R.id.main_container,
-                        SignInResponseFragment.newInstance(signInResponse.getResultCode(),
-                                signInResponse.getMessage()), "response").commit();
+    protected void onStartLoading() {
+        if (mSignInResponse != null) {
+            deliverResult(mSignInResponse);
+        } else {
+            forceLoad();
+        }
+    }
+
+    @Override
+    protected void onReset() {
+        onStopLoading();
+        if (mSignInResponse != null) {
+            mSignInResponse = null;
+        }
+    }
+
+    @Override
+    public void deliverResult(SignInResponse data) {
+        if (isReset() && mSignInResponse != null) {
+            return;
+        }
+
+        mSignInResponse = data;
+        if (isStarted()) {
+            super.deliverResult(data);
+        }
     }
 }

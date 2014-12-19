@@ -15,10 +15,13 @@
  */
 package com.skubit.bitid;
 
-public interface AuthenticationCallback {
+public class UIState {
 
-    void callback(int resultCode, String message);
+    public final static String CHOOSE_ADDRESS = "CHOOSE_ADDRESS";
 
-    void cancel();
+    public final static String CREATE_ADDRESS = "CREATE_ADDRESS";
 
+    public final static String SIGNIN_REQUEST = "SIGNIN_REQUEST";
+
+    public final static String SIGNIN_RESPONSE = "SIGNIN_RESPONSE";
 }

@@ -22,8 +22,6 @@ import com.skubit.bitid.Utils;
 import com.skubit.bitid.provider.key.KeyColumns;
 import com.skubit.bitid.provider.key.KeyContentValues;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +32,7 @@ import android.widget.TextView;
 
 import java.net.URISyntaxException;
 
-public class CreateAddressFragment extends Fragment {
+public class CreateAddressFragment extends BaseFragment {
 
     private TextView mAddressText;
 
@@ -56,12 +54,12 @@ public class CreateAddressFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        final String contents = getArguments().getString(BitID.EXTRA_NAME);
+        final String bitID = getArguments().getString(BitID.EXTRA_NAME);
         View view = inflater.inflate(R.layout.fragment_create_address, container, false);
         mAddressText = (TextView) view.findViewById(R.id.addressText);
         mNickname = (EditText) view.findViewById(R.id.nicknameText);
         try {
-            mNickname.setText(Utils.getBitID(contents).toCallbackURI().getHost());
+            mNickname.setText(Utils.getBitID(bitID).toCallbackURI().getHost());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -79,13 +77,10 @@ public class CreateAddressFragment extends Fragment {
                 kcv.putPriv(key.getPrivateKey());
                 kcv.putAddress((key.getAddress()));
                 kcv.putNickname(mNickname.getText().toString());
-                getActivity().getContentResolver().insert(KeyColumns.CONTENT_URI, kcv.values());
-
-                getFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_NONE)
-                        .replace(R.id.main_container, ChooseAddressFragment.newInstance(contents),
-                                "accept")
-                        .commit();
+                if (mAuthCallbacks != null) {
+                    getActivity().getContentResolver().insert(KeyColumns.CONTENT_URI, kcv.values());
+                    mAuthCallbacks.showChooseAddress(bitID);
+                }
             }
         });
 
@@ -94,11 +89,9 @@ public class CreateAddressFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_NONE)
-                        .replace(R.id.main_container, ChooseAddressFragment.newInstance(contents),
-                                "accept")
-                        .commit();
+                if (mAuthCallbacks != null) {
+                    mAuthCallbacks.showChooseAddress(bitID);
+                }
             }
         });
         return view;

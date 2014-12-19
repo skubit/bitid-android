@@ -15,14 +15,12 @@
  */
 package com.skubit.bitid.fragments;
 
-import com.skubit.bitid.AuthenticationCallback;
 import com.skubit.bitid.R;
 import com.skubit.bitid.ResultCode;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -31,8 +29,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class SignInResponseFragment extends Fragment {
-
+public class SignInResponseFragment extends BaseFragment {
 
     public static SignInResponseFragment newInstance(int resultCode, String message) {
         SignInResponseFragment signInResponseFragment = new SignInResponseFragment();
@@ -66,7 +63,6 @@ public class SignInResponseFragment extends Fragment {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signin_response, container, false);
         TextView messageView = (TextView) view.findViewById(R.id.message);
-        final AuthenticationCallback callback = (AuthenticationCallback) getActivity();
 
         final String message = getArguments().getString("message");
         final int resultCode = getArguments().getInt("resultCode");
@@ -81,7 +77,9 @@ public class SignInResponseFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                callback.callback(resultCode, message);
+                if (mAuthCallbacks != null) {
+                    mAuthCallbacks.sendResultsBackToCaller(resultCode, message);
+                }
             }
         });
 
