@@ -131,6 +131,11 @@ public class ChooseAddressFragment extends BaseFragment
         });
 
         mListView.setAdapter(adapter);
+        if(c.getCount() > 0) {
+            mListView.requestFocusFromTouch();
+            mListView.setItemChecked(c.getCount() - 1, true);
+            mListView.smoothScrollToPosition(c.getCount());
+        }
         return view;
     }
 
