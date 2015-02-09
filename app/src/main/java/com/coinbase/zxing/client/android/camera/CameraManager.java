@@ -16,7 +16,9 @@
 
 package com.coinbase.zxing.client.android.camera;
 
-import java.io.IOException;
+import com.google.zxing.PlanarYUVLuminanceSource;
+
+import com.coinbase.zxing.client.android.camera.open.OpenCameraManager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,8 +31,7 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.google.zxing.PlanarYUVLuminanceSource;
-import com.coinbase.zxing.client.android.camera.open.OpenCameraManager;
+import java.io.IOException;
 
 /**
  * This object wraps the Camera service object and expects to be the only one talking to it. The

@@ -18,9 +18,6 @@ package com.skubit.bitid.fragments;
 import com.skubit.bitid.R;
 import com.skubit.bitid.ResultCode;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -44,18 +41,7 @@ public class SignInResponseFragment extends BaseFragment {
     }
 
     private String getMessageValue(String message) {
-        if (TextUtils.isEmpty(message)) {
-            return null;
-        }
-
-        try {
-            JSONObject joMessage = new JSONObject(message);
-            if (joMessage.has("message")) {
-                return joMessage.get("message").toString();
-            }
-        } catch (JSONException e) {
-        }
-        return "Unknown Error";
+        return TextUtils.isEmpty(message) ? "Unknown Error" : message;
     }
 
     @Override

@@ -16,6 +16,9 @@
 
 package com.coinbase.zxing.client.android;
 
+import com.coinbase.zxing.client.android.common.executor.AsyncTaskExecInterface;
+import com.coinbase.zxing.client.android.common.executor.AsyncTaskExecManager;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,9 +27,6 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.util.Log;
-
-import com.coinbase.zxing.client.android.common.executor.AsyncTaskExecInterface;
-import com.coinbase.zxing.client.android.common.executor.AsyncTaskExecManager;
 
 /**
  * Finishes an activity after a period of inactivity if the device is on battery power.

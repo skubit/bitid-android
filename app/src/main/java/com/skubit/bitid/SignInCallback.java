@@ -23,6 +23,8 @@ public interface SignInCallback {
 
     public void showLoading();
 
+    public void hideLoading();
+
     void showChooseAddress(String bitID);
 
     void showCreateAddress(String bitID, ECKeyData keyData);
@@ -30,6 +32,5 @@ public interface SignInCallback {
     void showSignInRequest(String bitID);
 
     void showSignInResponse(int responseCode, String message);
-
 
 }

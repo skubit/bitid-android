@@ -20,6 +20,7 @@ import com.skubit.bitid.ECKeyData;
 import com.skubit.bitid.R;
 import com.skubit.bitid.ResultCode;
 import com.skubit.bitid.SignInCallback;
+import com.skubit.bitid.TidBit;
 import com.skubit.bitid.UIState;
 import com.skubit.bitid.fragments.ChooseAddressFragment;
 import com.skubit.bitid.fragments.CreateAddressFragment;
@@ -35,17 +36,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
 
 import java.net.URISyntaxException;
 
 public class AuthenticationActivity extends Activity implements SignInCallback {
 
-    private ECKeyData mEcKeyData;
+    protected View mLoading;
 
     private String mUIState = UIState.SIGNIN_REQUEST;
 
     private String mBitId;
+
+    private View mMainContainer;
+
 
     public static Intent newInstance(String bitId) {
         Intent i = new Intent();
@@ -84,7 +89,11 @@ public class AuthenticationActivity extends Activity implements SignInCallback {
             return false;
         }
         try {
-            BitID.parse(bitId);
+            if(bitId.startsWith("tidbit://")) {
+                TidBit.parse(bitId);
+            } else {
+                BitID.parse(bitId);
+            }
         } catch (URISyntaxException e) {
             return false;
         }
@@ -94,7 +103,10 @@ public class AuthenticationActivity extends Activity implements SignInCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authentication);
+        setContentView(R.layout.activity_authentication_frame);
+        this.mLoading = this.findViewById(R.id.progress_bar);
+        this.mMainContainer = this.findViewById(R.id.main_container);
+
         String bitId = getBitId();
         if (bitId == null) {
             bitId = mBitId;
@@ -161,8 +173,16 @@ public class AuthenticationActivity extends Activity implements SignInCallback {
         outState.putString("UI_STATE", mUIState);
     }
 
-    public void showLoading() {
+    @Override
+    public void hideLoading() {
+        mMainContainer.setVisibility(View.VISIBLE);
+        mLoading.setVisibility(View.INVISIBLE);
+    }
 
+    @Override
+    public void showLoading() {
+        mMainContainer.setVisibility(View.INVISIBLE);
+        mLoading.setVisibility(View.VISIBLE);
     }
 
     public void showCreateAddress(String bitID, ECKeyData keyData) {

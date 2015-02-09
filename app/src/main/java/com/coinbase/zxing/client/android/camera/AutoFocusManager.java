@@ -16,6 +16,10 @@
 
 package com.coinbase.zxing.client.android.camera;
 
+import com.coinbase.zxing.client.android.PreferencesActivity;
+import com.coinbase.zxing.client.android.common.executor.AsyncTaskExecInterface;
+import com.coinbase.zxing.client.android.common.executor.AsyncTaskExecManager;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.hardware.Camera;
@@ -25,10 +29,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.coinbase.zxing.client.android.PreferencesActivity;
-import com.coinbase.zxing.client.android.common.executor.AsyncTaskExecInterface;
-import com.coinbase.zxing.client.android.common.executor.AsyncTaskExecManager;
 
 final class AutoFocusManager implements Camera.AutoFocusCallback {
 

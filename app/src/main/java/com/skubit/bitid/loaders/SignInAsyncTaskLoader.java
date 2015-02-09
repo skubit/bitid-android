@@ -16,8 +16,10 @@
 package com.skubit.bitid.loaders;
 
 import com.skubit.bitid.BitID;
+import com.skubit.bitid.JwtBuilder;
 import com.skubit.bitid.ResultCode;
 import com.skubit.bitid.SignInResponse;
+import com.skubit.bitid.TidBit;
 import com.skubit.bitid.Utils;
 
 import org.bitcoinj.core.ECKey;
@@ -35,6 +37,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class SignInAsyncTaskLoader extends AsyncTaskLoader<SignInResponse> {
@@ -61,8 +65,11 @@ public class SignInAsyncTaskLoader extends AsyncTaskLoader<SignInResponse> {
         }
     }
 
-    private SignInResponse performRequest() throws IOException, URISyntaxException, JSONException {
+    private SignInResponse performRequest()
+            throws IOException, URISyntaxException, JSONException, InvalidKeyException,
+            NoSuchAlgorithmException {
         openConnection();
+
         writeRequest(buildRequest());
         return readResponse();
     }
@@ -94,7 +101,19 @@ public class SignInAsyncTaskLoader extends AsyncTaskLoader<SignInResponse> {
             return new SignInResponse(ResultCode.OK, asString(mConnection.getInputStream()));
         } else if (rc >= 400) {
             String message = asString(mConnection.getErrorStream());
-            return new SignInResponse(Utils.getCodeFromMessage(message), message);
+
+            if (mBitID instanceof TidBit) {
+                try {
+                    JSONObject jo = new JSONObject(message);
+                    return new SignInResponse(jo.getInt("code"), jo.getString("message"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return new SignInResponse(-1, e.getMessage());
+                }
+            } else {
+                return new SignInResponse(Utils.getCodeFromMessage(message), message);
+            }
+
         } else {
             return new SignInResponse(ResultCode.UNKNOWN_ERROR, null);
         }
@@ -104,7 +123,13 @@ public class SignInAsyncTaskLoader extends AsyncTaskLoader<SignInResponse> {
         return mKey.signMessage(mBitID.getRawUri());
     }
 
-    private String buildRequest() throws JSONException, UnsupportedEncodingException {
+    private String buildJwtRequest()
+            throws InvalidKeyException, NoSuchAlgorithmException, JSONException,
+            UnsupportedEncodingException {
+        return JwtBuilder.buildRequest(mKey, (TidBit) mBitID);
+    }
+
+    private String buildBidRequest() throws JSONException, UnsupportedEncodingException {
         JSONObject json = new JSONObject();
         json.put("address", URLDecoder
                 .decode(mKey.toAddress(MainNetParams.get()).toString(), "UTF-8"));
@@ -113,12 +138,22 @@ public class SignInAsyncTaskLoader extends AsyncTaskLoader<SignInResponse> {
         return json.toString();
     }
 
+    private String buildRequest()
+            throws JSONException, UnsupportedEncodingException, NoSuchAlgorithmException,
+            InvalidKeyException {
+        if(mBitID instanceof TidBit) {
+            return buildJwtRequest();
+        } else {
+            return buildBidRequest();
+        }
+    }
+
     @Override
     public SignInResponse loadInBackground() {
         try {
             return performRequest();
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return new SignInResponse(ResultCode.UNKNOWN_ERROR, null);
     }

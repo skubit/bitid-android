@@ -19,6 +19,7 @@ import com.skubit.bitid.BitID;
 import com.skubit.bitid.ECKeyData;
 import com.skubit.bitid.R;
 import com.skubit.bitid.SignInResponse;
+import com.skubit.bitid.TidBit;
 import com.skubit.bitid.Utils;
 import com.skubit.bitid.loaders.SignInAsyncTaskLoader;
 import com.skubit.bitid.provider.key.KeyColumns;
@@ -39,6 +40,7 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.net.URISyntaxException;
 
@@ -107,6 +109,15 @@ public class ChooseAddressFragment extends BaseFragment
 
             @Override
             public void onClick(View v) {
+                if(kc.getCount() == 0) {
+                    Toast.makeText(getActivity(), "Try creating an address first",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (mAuthCallbacks != null) {
+                    mAuthCallbacks.showLoading();
+                }
+
                 mEcKey = ECKey.fromPrivate(kc.getPriv());
                 getLoaderManager().initLoader(2, null, ChooseAddressFragment.this);
             }
@@ -131,7 +142,7 @@ public class ChooseAddressFragment extends BaseFragment
         });
 
         mListView.setAdapter(adapter);
-        if(c.getCount() > 0) {
+        if (c.getCount() > 0) {
             mListView.requestFocusFromTouch();
             mListView.setItemChecked(c.getCount() - 1, true);
             mListView.smoothScrollToPosition(c.getCount());
@@ -142,7 +153,8 @@ public class ChooseAddressFragment extends BaseFragment
     @Override
     public Loader<SignInResponse> onCreateLoader(int id, Bundle args) {
         try {
-            return new SignInAsyncTaskLoader(getActivity(), BitID.parse(mBitID), mEcKey);
+            BitID bitId = mBitID.startsWith("tidbit://") ? TidBit.parse(mBitID) : BitID.parse(mBitID);
+            return new SignInAsyncTaskLoader(getActivity(), bitId, mEcKey);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -152,6 +164,7 @@ public class ChooseAddressFragment extends BaseFragment
     @Override
     public void onLoadFinished(Loader<SignInResponse> loader, SignInResponse data) {
         if (mAuthCallbacks != null) {
+            mAuthCallbacks.hideLoading();
             mAuthCallbacks.showSignInResponse(data.getResultCode(), data.getMessage());
             mEcKey = null;
         }

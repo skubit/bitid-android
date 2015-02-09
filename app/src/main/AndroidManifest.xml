@@ -1,57 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.skubit.bitid" >
+          package="com.skubit.bitid">
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="com.skubit.bitid.AUTHENTICATION" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.skubit.bitid.AUTHENTICATION"/>
 
     <permission
-        android:name="com.skubit.bitid.AUTHENTICATION"
-        android:description="@string/perm_billing"
-        android:protectionLevel="normal" />
+            android:name="com.skubit.bitid.AUTHENTICATION"
+            android:description="@string/perm_billing"
+            android:protectionLevel="normal"/>
 
     <application
-        android:allowBackup="false"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+            android:allowBackup="false"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.MainActivity"
-            android:label="@string/app_name" >
+                android:name=".activities.MainActivity"
+                android:label="@string/app_name">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
         </activity>
         <activity
-            android:name="com.coinbase.zxing.client.android.CaptureActivity"
-            android:label="@string/app_name" >
+                android:name="com.coinbase.zxing.client.android.CaptureActivity"
+                android:label="@string/app_name">
         </activity>
         <activity
-            android:name=".activities.AuthenticationActivity"
-            android:label="@string/app_name"
-            android:theme="@style/SkubitDialog"
-            >
+                android:name=".activities.DisplayLicensesActivity"
+                android:label="@string/app_name">
+        </activity>
+        <activity
+                android:name=".activities.ImportActivity"
+                android:label="@string/app_name"
+                android:theme="@style/SkubitDialog"
+                >
+        </activity>
+        <activity
+                android:name=".activities.ExportActivity"
+                android:label="@string/app_name"
+                android:theme="@style/SkubitDialog"
+                >
+        </activity>
+        <activity
+                android:name=".activities.AuthenticationActivity"
+                android:label="@string/app_name"
+                android:theme="@style/SkubitDialog"
+                >
+
             <intent-filter>
-                <!--
-                android:permission="com.skubit.bitid.AUTHENTICATION"
-                -->
                 <action android:name="com.skubit.bitid.intent.AUTHENTICATE"/>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data android:scheme="bitid"/>
+                <data android:scheme="tidbit"/>
             </intent-filter>
+
         </activity>
         <provider
-            android:name="com.skubit.bitid.provider.KeyProvider"
-            android:authorities="com.skubit.bitid.provider"
-            android:exported="false" />
+                android:name="com.skubit.bitid.provider.KeyProvider"
+                android:authorities="com.skubit.bitid.provider"
+                android:exported="false"/>
 
     </application>
 

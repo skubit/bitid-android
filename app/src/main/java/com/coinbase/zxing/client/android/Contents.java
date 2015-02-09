@@ -53,7 +53,7 @@ public final class Contents {
     /**
      * A contact. Send a request to encode it as follows:
      * <p/>
-     * import android.provider.Contacts;
+     * export android.provider.Contacts;
      * <p/>
      * Intent intent = new Intent(Intents.Encode.ACTION);
      * intent.putExtra(Intents.Encode.TYPE, CONTACT);

@@ -16,8 +16,10 @@
 
 package com.coinbase.zxing.client.android;
 
-import java.util.Collection;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.Result;
 
+import com.coinbase.zxing.client.android.camera.CameraManager;
 import com.skubit.bitid.R;
 
 import android.app.Activity;
@@ -33,9 +35,7 @@ import android.os.Message;
 import android.provider.Browser;
 import android.util.Log;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Result;
-import com.coinbase.zxing.client.android.camera.CameraManager;
+import java.util.Collection;
 
 /**
  * This class handles all the messaging which comprises the state machine for capture.

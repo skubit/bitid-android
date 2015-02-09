@@ -50,7 +50,7 @@ public class SignInRequestFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_signin_request, container, false);
         mSite = (TextView) view.findViewById(R.id.site);
         try {
-            mSite.setText(Utils.getBitID(bitID).toCallbackURI().getHost());
+            mSite.setText(Utils.getID(bitID).toCallbackURI().getHost());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

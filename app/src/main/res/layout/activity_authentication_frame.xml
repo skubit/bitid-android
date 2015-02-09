@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/activity_authentication_frame"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:minHeight="@dimen/purchase_dialog_small_height"
+             android:minWidth="@dimen/purchase_dialog_width">
+
+    <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+
+
+    <include layout="@layout/activity_authentication"/>
+</FrameLayout>

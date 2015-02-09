@@ -25,15 +25,15 @@ public class BitID {
 
     public static final String EXTRA_NAME = "bitID";
 
-    private Uri mUri;
+    protected Uri mUri;
 
-    private boolean mIsSecured;
+    protected boolean mIsSecured;
 
-    private String mNonce;
+    protected String mNonce;
 
-    private String mRawUri;
+    protected String mRawUri;
 
-    private BitID() {
+    protected BitID() {
     }
 
     public static BitID parse(String bitID) throws URISyntaxException {
@@ -47,7 +47,6 @@ public class BitID {
         checkIfValid(bitId.mUri);
 
         bitId.mNonce = bitId.mUri.getQueryParameter("x");
-
         String uValue = bitId.mUri.getQueryParameter("u");
         bitId.mIsSecured = TextUtils.isEmpty(uValue) || uValue.equals("0");
 

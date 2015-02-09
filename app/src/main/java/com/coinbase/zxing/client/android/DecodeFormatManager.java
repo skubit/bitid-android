@@ -16,15 +16,16 @@
 
 package com.coinbase.zxing.client.android;
 
+import com.google.zxing.BarcodeFormat;
+
+import android.content.Intent;
+import android.net.Uri;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import android.content.Intent;
-import android.net.Uri;
-import com.google.zxing.BarcodeFormat;
 
 final class DecodeFormatManager {
 

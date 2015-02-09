@@ -21,26 +21,18 @@ import com.skubit.bitid.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 
 
 public class MainActivity extends Activity {
 
-    private Button newKeyBtn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        newKeyBtn = (Button) findViewById(R.id.loginBtn);
-        newKeyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startBarcodeScan();
-            }
-        });
     }
 
     public void startBarcodeScan() {
@@ -57,5 +49,34 @@ public class MainActivity extends Activity {
         }
         Intent loginIntent = AuthenticationActivity.newInstance(data.getStringExtra("SCAN_RESULT"));
         startActivity(loginIntent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int order = item.getOrder();
+         if (order == 1) {
+             startBarcodeScan();
+        } else if (order == 2) {
+            Intent i = new Intent();
+            i.setClass(this, ImportActivity.class);
+            startActivity(i);
+        } else if (order == 3) {
+            Intent i = new Intent();
+            i.setClass(this, ExportActivity.class);
+            startActivity(i);
+        } else if (order == 4) {
+            Intent i = new Intent();
+            i.setClass(this, DisplayLicensesActivity.class);
+            startActivity(i);
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

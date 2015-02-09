@@ -16,6 +16,8 @@
 
 package com.coinbase.zxing.client.android;
 
+import com.skubit.bitid.R;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,7 +29,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.IOException;
-import com.skubit.bitid.R;
 
 /**
  * Manages beeps and vibrations for {@link com.coinbase.zxing.client.android.CaptureActivity}.

@@ -59,7 +59,7 @@ public class CreateAddressFragment extends BaseFragment {
         mAddressText = (TextView) view.findViewById(R.id.addressText);
         mNickname = (EditText) view.findViewById(R.id.nicknameText);
         try {
-            mNickname.setText(Utils.getBitID(bitID).toCallbackURI().getHost());
+            mNickname.setText(Utils.getID(bitID).toCallbackURI().getHost());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

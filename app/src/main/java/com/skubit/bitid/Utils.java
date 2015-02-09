@@ -32,6 +32,14 @@ public class Utils {
         return bundle;
     }
 
+    public static BitID getID(String bitID) {
+        if(bitID.startsWith("tidbit://")) {
+            return getTidBit(bitID);
+        } else {
+            return getBitID(bitID);
+        }
+    }
+
     public static BitID getBitID(String bitID) {
         BitID bitId = null;
         try {
@@ -41,6 +49,17 @@ public class Utils {
         }
 
         return bitId;
+    }
+
+    public static BitID getTidBit(String tidbit) {
+        TidBit tb = null;
+        try {
+            tb = TidBit.parse(tidbit);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        return tb;
     }
 
     public static int getCodeFromMessage(String message) {

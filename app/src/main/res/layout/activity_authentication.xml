@@ -2,9 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:id="@+id/authentication_frame"
              android:layout_width="fill_parent"
-             android:layout_height="fill_parent"
-             android:minHeight="@dimen/purchase_dialog_small_height"
-             android:minWidth="@dimen/purchase_dialog_width">
+             android:layout_height="fill_parent">
 
     <!-- The main content view -->
 

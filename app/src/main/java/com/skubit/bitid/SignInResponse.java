@@ -33,4 +33,12 @@ public class SignInResponse {
     public String getMessage() {
         return message;
     }
+
+    @Override
+    public String toString() {
+        return "SignInResponse{" +
+                "resultCode=" + resultCode +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

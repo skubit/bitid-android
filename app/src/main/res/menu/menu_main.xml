@@ -1,5 +1,25 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" android:showAsAction="never" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/action_signin"
+            android:orderInCategory="1"
+            android:showAsAction="always"
+            android:title="Signin"/>
+
+    <item
+            android:id="@+id/action_import"
+            android:orderInCategory="2"
+            android:showAsAction="always"
+            android:title="Import"/>
+    <item
+            android:id="@+id/action_export"
+            android:orderInCategory="3"
+            android:showAsAction="always"
+            android:title="Export"/>
+    <item
+            android:id="@+id/action_notice"
+            android:orderInCategory="4"
+            android:showAsAction="collapseActionView|withText"
+            android:title="Open Source Licenses">
+    </item>
 </menu>

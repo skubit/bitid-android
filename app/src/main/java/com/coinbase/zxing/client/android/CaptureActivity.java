@@ -16,10 +16,12 @@
 
 package com.coinbase.zxing.client.android;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.Result;
+import com.google.zxing.ResultMetadataType;
+import com.google.zxing.ResultPoint;
 
+import com.coinbase.zxing.client.android.camera.CameraManager;
 import com.skubit.bitid.R;
 
 import android.app.Activity;
@@ -44,11 +46,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Result;
-import com.google.zxing.ResultMetadataType;
-import com.google.zxing.ResultPoint;
-import com.coinbase.zxing.client.android.camera.CameraManager;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a
